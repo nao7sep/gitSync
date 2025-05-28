@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+
+        <!-- Project Metadata -->
+        <AssemblyTitle>gitSyncApp</AssemblyTitle>
+        <Product>gitSync</Product>
+        <Description>A utility for synchronizing git repositories.</Description>
+        <Company>Purrfect Code</Company>
+        <Authors>nao7sep</Authors>
+        <Copyright>Copyright © 2025</Copyright>
+        <Version>0.1</Version>
+        <PackageLicenseExpression>GPL-3.0</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/nao7sep/gitSync</RepositoryUrl>
+    </PropertyGroup>
+
+</Project>
