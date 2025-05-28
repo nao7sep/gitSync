@@ -47,7 +47,7 @@ namespace gitSyncApp
             var chunks = new List<ConsoleChunk>();
             if (!string.IsNullOrEmpty(message))
                 chunks.Add(new ConsoleChunk(message + ": "));
-            chunks.Add(new ConsoleChunk(ex.ToString(), fg: ConsoleColor.Red));
+            chunks.Add(new ConsoleChunk(ex.ToString() + Environment.NewLine, fg: ConsoleColor.Red));
             EnqueueChunks(chunks);
         }
 
