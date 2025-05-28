@@ -26,6 +26,9 @@ namespace gitSyncApp
         private readonly Thread _worker;
         private bool _disposed;
 
+        // Singleton instance for global use
+        public static SafeConsoleWriter Default { get; } = new SafeConsoleWriter();
+
         public SafeConsoleWriter()
         {
             _worker = new Thread(ProcessQueue) { IsBackground = true };

@@ -11,10 +11,12 @@ namespace gitSyncApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex}");
+                SafeConsoleWriter.Default.EnqueueException(ex, "Error");
             }
             finally
             {
+                // Ensure all enqueued console output is written before prompting the user to exit.
+                SafeConsoleWriter.Default.Dispose();
                 Console.WriteLine("Press any key to exit...");
                 Console.ReadKey();
             }
