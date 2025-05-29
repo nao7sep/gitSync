@@ -55,7 +55,7 @@ namespace gitSyncApp
             AddList("Unpulled commits", status.UnpulledCommits, "[unpulled] ");
 
             if (!anyActionRequired)
-                chunks.Add(new ConsoleChunk($"No actions required.{Environment.NewLine}"));
+                return;
 
             writer.EnqueueChunks(chunks);
         }
