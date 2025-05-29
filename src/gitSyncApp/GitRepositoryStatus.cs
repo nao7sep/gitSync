@@ -170,6 +170,12 @@ namespace gitSyncApp
             }
         }
 
+        public bool HasRemoteUpdates()
+        {
+            // Returns true if there are commits in the remote branch not yet pulled
+            return UnpulledCommits.Count > 0;
+        }
+
         public bool IsSafeToPull()
         {
             // Ensure both branches are set

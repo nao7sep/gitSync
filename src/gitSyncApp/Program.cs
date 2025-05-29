@@ -73,12 +73,12 @@ namespace gitSyncApp
                 }
                 await Task.WhenAll(tasks);
 
-                // List safe-to-pull repositories
-                var safeToPull = repoStatuses.Where(r => r.IsSafeToPull()).ToList();
-                if (safeToPull.Count > 0)
+                // List repositories that have remote updates and are safe to pull
+                var remoteUpdatesAndSafe = repoStatuses.Where(r => r.HasRemoteUpdates() && r.IsSafeToPull()).ToList();
+                if (remoteUpdatesAndSafe.Count > 0)
                 {
-                    Console.WriteLine("Repositories safe to pull:");
-                    foreach (var repo in safeToPull)
+                    Console.WriteLine("Repositories that have remote updates and are safe to pull:");
+                    foreach (var repo in remoteUpdatesAndSafe)
                     {
                         Console.WriteLine($"    {repo.Name} ({repo.RepositoryPath})");
                     }
@@ -90,13 +90,13 @@ namespace gitSyncApp
                     }
                     if (answer == "y")
                     {
-                        foreach (var repo in safeToPull)
+                        foreach (var repo in remoteUpdatesAndSafe)
                         {
                             try
                             {
                                 var output = await repo.PullCommitsAsync();
                                 Console.WriteLine($"Pulled {repo.Name}:");
-                                Console.WriteLine(output);
+                                Console.WriteLine(output.TrimEnd());
                             }
                             catch (Exception ex)
                             {
@@ -104,6 +104,10 @@ namespace gitSyncApp
                             }
                         }
                     }
+                }
+                else
+                {
+                    Console.WriteLine("No repositories have remote updates and are safe to pull.");
                 }
             }
             catch (Exception ex)
