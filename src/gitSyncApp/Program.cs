@@ -26,7 +26,7 @@ namespace gitSyncApp
                 void ScanDir(string dir)
                 {
                     if (ignorePaths.Contains(dir)) return;
-                    var dirName = Path.GetFileName(dir.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+                    var dirName = PathUtil.GetRepoNameFromPath(dir);
                     if (ignoreNames.Contains(dirName)) return;
                     if (Directory.Exists(Path.Combine(dir, ".git")))
                     {
@@ -49,6 +49,13 @@ namespace gitSyncApp
                 {
                     ConsoleColorUtil.WriteColoredLine("No git repositories found in the specified root directories.", ConsoleColor.Yellow);
                     return;
+                }
+
+                // Show a one-line list of repositories to check
+                if (repoPaths.Count > 0)
+                {
+                    var repoNames = repoPaths.Select(PathUtil.GetRepoNameFromPath);
+                    Console.WriteLine($"Checking repositories: {string.Join(", ", repoNames)}");
                 }
 
                 // Analyze all repositories in parallel

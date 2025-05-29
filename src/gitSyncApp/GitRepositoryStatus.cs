@@ -24,7 +24,7 @@ namespace gitSyncApp
         public GitRepositoryStatus(string repoPath)
         {
             RepositoryPath = repoPath;
-            Name = Path.GetFileName(repoPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+            Name = PathUtil.GetRepoNameFromPath(repoPath);
             UntrackedFiles = new List<string>();
             ModifiedFiles = new List<string>();
             DeletedFiles = new List<string>();
