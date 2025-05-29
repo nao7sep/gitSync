@@ -58,7 +58,8 @@ namespace gitSyncApp
                 {
                     var status = new GitRepositoryStatus(repoPath);
                     repoStatuses.Add(status);
-                    tasks.Add(Task.Run(async () => {
+                    tasks.Add(Task.Run(async () =>
+                    {
                         try
                         {
                             await status.RefreshStatusAsync(GitRepositoryStatusActions.AnalyzeAndReport);
