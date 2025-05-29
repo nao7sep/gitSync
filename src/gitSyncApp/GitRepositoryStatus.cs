@@ -130,8 +130,8 @@ namespace gitSyncApp
         //   - Used here to set LocalBranch and RemoteBranch properties.
         private async Task GetBranchesAsync()
         {
-            LocalBranch = await RunGitCommandAsync("rev-parse --abbrev-ref HEAD");
-            RemoteBranch = await RunGitCommandAsync("rev-parse --abbrev-ref --symbolic-full-name HEAD@{upstream}");
+            LocalBranch = (await RunGitCommandAsync("rev-parse --abbrev-ref HEAD")).Trim();
+            RemoteBranch = (await RunGitCommandAsync("rev-parse --abbrev-ref --symbolic-full-name HEAD@{upstream}")).Trim();
         }
 
         // GIT COMMAND: 'git log {RemoteBranch}..HEAD --oneline'
