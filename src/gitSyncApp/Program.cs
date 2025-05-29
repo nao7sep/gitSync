@@ -73,9 +73,20 @@ namespace gitSyncApp
                 }
                 await Task.WhenAll(tasks);
 
+                // If all repositories are up to date, display a message and return
+                if (repoStatuses.All(r => r.IsUpToDate()))
+                {
+                    ConsoleColorUtil.WriteColoredLine("All repositories are up to date.", ConsoleColor.Green);
+                    return;
+                }
+
                 // List repositories that have remote updates and are safe to pull
                 var remoteUpdatesAndSafe = repoStatuses.Where(r => r.HasRemoteUpdates() && r.IsSafeToPull()).ToList();
-                if (remoteUpdatesAndSafe.Count > 0)
+                if (remoteUpdatesAndSafe.Count == 0)
+                {
+                    Console.WriteLine("No repositories have remote updates and are safe to pull.");
+                }
+                else
                 {
                     Console.WriteLine("Repositories that have remote updates and are safe to pull:");
                     foreach (var repo in remoteUpdatesAndSafe)
@@ -104,10 +115,6 @@ namespace gitSyncApp
                             }
                         }
                     }
-                }
-                else
-                {
-                    Console.WriteLine("No repositories have remote updates and are safe to pull.");
                 }
             }
             catch (Exception ex)

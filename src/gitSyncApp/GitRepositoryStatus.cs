@@ -170,6 +170,27 @@ namespace gitSyncApp
             }
         }
 
+        public bool IsUpToDate()
+        {
+            // A repository is up to date if:
+            // - Both branches are set
+            // - No untracked, modified, deleted, staged, or conflicted files
+            // - No stashed changes
+            // - No unpushed commits
+            // - No unpulled commits (i.e., nothing to pull)
+            if (string.IsNullOrWhiteSpace(LocalBranch) || string.IsNullOrWhiteSpace(RemoteBranch))
+                return false;
+
+            return UntrackedFiles.Count == 0
+                && ModifiedFiles.Count == 0
+                && DeletedFiles.Count == 0
+                && StagedFiles.Count == 0
+                && ConflictedFiles.Count == 0
+                && StashedFiles.Count == 0
+                && UnpushedCommits.Count == 0
+                && UnpulledCommits.Count == 0;
+        }
+
         public bool HasRemoteUpdates()
         {
             // Returns true if there are commits in the remote branch not yet pulled
