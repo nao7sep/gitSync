@@ -7,6 +7,9 @@ namespace gitSyncApp
     public static class GitRepositoryStatusActions
     {
         // Default action: Analyzes the repository state and outputs a report to SafeConsoleWriter.Default.
+        //
+        // We use SafeConsoleWriter here because repositories are checked asynchronously,
+        // and we want to display partially colored reports for each repository as soon as they are available.
         public static void AnalyzeAndReport(GitRepositoryStatus status)
         {
             var writer = SafeConsoleWriter.Default;
