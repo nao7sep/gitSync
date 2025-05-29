@@ -21,5 +21,20 @@ namespace gitSyncApp
         {
             return Configuration.GetSection("Git:PossiblePaths").Get<IEnumerable<string>>() ?? Array.Empty<string>();
         }
+
+        public static IEnumerable<string> GetRepositoryRootDirectories()
+        {
+            return Configuration.GetSection("RepositoryScan:RootDirectories").Get<IEnumerable<string>>() ?? Array.Empty<string>();
+        }
+
+        public static IEnumerable<string> GetIgnoreDirectoryPaths()
+        {
+            return Configuration.GetSection("RepositoryScan:IgnoreDirectoryPaths").Get<IEnumerable<string>>() ?? Array.Empty<string>();
+        }
+
+        public static IEnumerable<string> GetIgnoreDirectoryNames()
+        {
+            return Configuration.GetSection("RepositoryScan:IgnoreDirectoryNames").Get<IEnumerable<string>>() ?? Array.Empty<string>();
+        }
     }
 }
