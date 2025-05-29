@@ -169,5 +169,34 @@ namespace gitSyncApp
                 if (!string.IsNullOrWhiteSpace(line)) UnpulledCommits.Add(line);
             }
         }
+
+        public bool IsSafeToPull()
+        {
+            // Ensure both branches are set
+            if (string.IsNullOrWhiteSpace(LocalBranch) || string.IsNullOrWhiteSpace(RemoteBranch))
+                return false;
+
+            // Safe to pull if:
+            // - No untracked, modified, deleted, staged, or conflicted files
+            // - No stashed changes
+            // - No unpushed commits (no local/remote divergence)
+            return UntrackedFiles.Count == 0
+                && ModifiedFiles.Count == 0
+                && DeletedFiles.Count == 0
+                && StagedFiles.Count == 0
+                && ConflictedFiles.Count == 0
+                && StashedFiles.Count == 0
+                && UnpushedCommits.Count == 0;
+        }
+
+        // Pulls commits from the remote branch and returns the output
+        public async Task<string> PullCommitsAsync()
+        {
+            if (string.IsNullOrWhiteSpace(RemoteBranch))
+                throw new InvalidOperationException("No remote branch is set for this repository.");
+            var remoteName = RemoteBranch.Split('/')[0];
+            var branchName = RemoteBranch.Substring(remoteName.Length + 1); // after the first '/'
+            return await RunGitCommandAsync($"pull {remoteName} {branchName}");
+        }
     }
 }
