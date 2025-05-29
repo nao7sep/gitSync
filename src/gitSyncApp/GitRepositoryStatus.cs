@@ -160,14 +160,28 @@ namespace gitSyncApp
         private async Task GetUnpulledCommitsAsync()
         {
             UnpulledCommits.Clear();
-            if (string.IsNullOrWhiteSpace(RemoteBranch)) return;
-            var remoteName = RemoteBranch.Split('/')[0];
+            if (!TryParseRemoteBranch(RemoteBranch, out var remoteName, out var branchName)) return;
             await RunGitCommandAsync($"fetch {remoteName}");
             var output = await RunGitCommandAsync($"log HEAD..{RemoteBranch} --oneline");
             foreach (var line in ReadLines(output))
             {
                 if (!string.IsNullOrWhiteSpace(line)) UnpulledCommits.Add(line);
             }
+        }
+
+        // Helper to parse remote branch in the format remote/branch
+        private static bool TryParseRemoteBranch(string remoteBranch, out string remoteName, out string branchName)
+        {
+            remoteName = string.Empty;
+            branchName = string.Empty;
+            if (string.IsNullOrWhiteSpace(remoteBranch))
+                return false;
+            int slashIdx = remoteBranch.IndexOf('/');
+            if (slashIdx <= 0 || slashIdx == remoteBranch.Length - 1)
+                return false;
+            remoteName = remoteBranch.Substring(0, slashIdx);
+            branchName = remoteBranch.Substring(slashIdx + 1);
+            return !string.IsNullOrWhiteSpace(remoteName) && !string.IsNullOrWhiteSpace(branchName);
         }
 
         public bool IsUpToDate()
@@ -219,10 +233,8 @@ namespace gitSyncApp
         // Pulls commits from the remote branch and returns the output
         public async Task<string> PullCommitsAsync()
         {
-            if (string.IsNullOrWhiteSpace(RemoteBranch))
-                throw new InvalidOperationException("No remote branch is set for this repository.");
-            var remoteName = RemoteBranch.Split('/')[0];
-            var branchName = RemoteBranch.Substring(remoteName.Length + 1); // after the first '/'
+            if (!TryParseRemoteBranch(RemoteBranch, out var remoteName, out var branchName))
+                throw new InvalidOperationException($"Remote branch format is invalid: '{RemoteBranch}'");
             return await RunGitCommandAsync($"pull {remoteName} {branchName}");
         }
     }
