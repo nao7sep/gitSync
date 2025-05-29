@@ -16,9 +16,7 @@ namespace gitSyncApp
                 var rootDirs = AppSettings.GetRepositoryRootDirectories().ToList();
                 if (rootDirs.Count == 0)
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("No root directories are specified in settings.");
-                    Console.ResetColor();
+                    ConsoleColorUtil.WriteColoredLine("No root directories are specified in settings.", ConsoleColor.Yellow);
                     return;
                 }
                 var ignorePaths = new HashSet<string>(AppSettings.GetIgnoreDirectoryPaths(), StringComparer.OrdinalIgnoreCase);
@@ -49,9 +47,7 @@ namespace gitSyncApp
                     .OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToList();
                 if (repoPaths.Count == 0)
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("No git repositories found in the specified root directories.");
-                    Console.ResetColor();
+                    ConsoleColorUtil.WriteColoredLine("No git repositories found in the specified root directories.", ConsoleColor.Yellow);
                     return;
                 }
 
@@ -89,10 +85,7 @@ namespace gitSyncApp
                     string answer = string.Empty;
                     while (answer != "y" && answer != "n")
                     {
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.BackgroundColor = ConsoleColor.Blue;
-                        Console.Write("Do you want to pull these repositories? (y/n): ");
-                        Console.ResetColor();
+                        ConsoleColorUtil.WriteColored("Do you want to pull these repositories? (y/n): ", ConsoleColor.White, ConsoleColor.Blue);
                         answer = (Console.ReadLine() ?? string.Empty).Trim().ToLowerInvariant();
                     }
                     if (answer == "y")
@@ -103,13 +96,11 @@ namespace gitSyncApp
                             {
                                 var output = await repo.PullCommitsAsync();
                                 Console.WriteLine($"Pulled {repo.Name}:");
-                                Console.WriteLine(output.TrimEnd());
+                                Console.WriteLine(output);
                             }
                             catch (Exception ex)
                             {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine($"Error pulling {repo.Name}: {ex}");
-                                Console.ResetColor();
+                                ConsoleColorUtil.WriteColoredLine($"Error pulling {repo.Name}: {ex}", ConsoleColor.Red);
                             }
                         }
                     }
@@ -117,9 +108,7 @@ namespace gitSyncApp
             }
             catch (Exception ex)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"Error: {ex}");
-                Console.ResetColor();
+                ConsoleColorUtil.WriteColoredLine($"Error: {ex}", ConsoleColor.Red);
             }
             finally
             {
