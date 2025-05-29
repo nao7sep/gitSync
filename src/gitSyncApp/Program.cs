@@ -108,7 +108,7 @@ namespace gitSyncApp
                             {
                                 var output = await repo.PullCommitsAsync();
                                 Console.WriteLine($"Pulled {repo.Name}:");
-                                Console.WriteLine(output.TrimEnd());
+                                Console.WriteLine(output.Trim());
                             }
                             catch (Exception ex)
                             {

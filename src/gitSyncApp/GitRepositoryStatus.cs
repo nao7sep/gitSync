@@ -60,7 +60,10 @@ namespace gitSyncApp
             if (process == null)
                 throw new InvalidOperationException($"Failed to start git process: git {arguments}");
             string output = await process.StandardOutput.ReadToEndAsync();
+            string error = await process.StandardError.ReadToEndAsync();
             await process.WaitForExitAsync();
+            if (!string.IsNullOrWhiteSpace(error))
+                throw new InvalidOperationException($"git {arguments} error: {error.Trim()}");
             return output;
         }
 
