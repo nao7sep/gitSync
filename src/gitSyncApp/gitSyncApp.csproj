@@ -8,7 +8,7 @@
         <!-- Project Metadata -->
         <AssemblyTitle>gitSyncApp</AssemblyTitle>
         <Product>gitSync</Product>
-        <Description>A utility for synchronizing git repositories.</Description>
+        <Description>Cross-platform console app for automated monitoring and safe synchronization of multiple Git repositories.</Description>
         <Company>Purrfect Code</Company>
         <Authors>nao7sep</Authors>
         <Copyright>Copyright © 2025</Copyright>
